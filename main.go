@@ -12,14 +12,26 @@ func main() {
 		return
 	}
 	inputText := os.Args[1]
+	inputSlice := []string{}
+	str := ""
+	for i := 0; i < len(inputText); i++ {
+		// fmt.Println("str = ",str)
+		if i+1 < len(inputText) && inputText[i] == '\\' && inputText[i+1] == 'n' {
+			inputSlice = append(inputSlice, str)
+			str = ""
+			i++
+		} else {
+			str += string(inputText[i])
+		}
+	}
+	// fmt.Println("str outside = ",str)
+	inputSlice = append(inputSlice, str)
 	data, err := os.ReadFile("standard.txt")
 	if err != nil {
 		fmt.Println("error:", err)
+		return
 	}
 	blocks := strings.Split(string(data), "\n\n")
-	// if blocks[0] {
-
-	// }
 	if strings.Count(blocks[0], "\n") == 8 {
 		blocks[0] = blocks[0][1:]
 	}
@@ -31,39 +43,41 @@ func main() {
 	}
 	slice := [][]string{}
 	sliceValue := []string{}
-	for i := 0; i < len(inputText); i++ {
-		for key, value := range art_table {
-			if i+1 < len(inputText) && inputText[i] == '\\' && inputText[i+1] == 'n' {
-				continue
-			}
-			if inputText[i] == byte(key) {
-				sliceValue = strings.Split(value, "\n")
-				slice = append(slice, sliceValue)
-				sliceValue = []string{}
+	// fmt.Println(inputSlice)
+	for _, v := range inputSlice {
+		for i := 0; i < len(v); i++ {
+			for key, value := range art_table {
+				if v[i] == byte(key) {
+					sliceValue = strings.Split(value, "\n")
+					slice = append(slice, sliceValue)
+					sliceValue = []string{}
+				}
 			}
 		}
-		if i+1 < len(inputText) && inputText[i] == '\\' && inputText[i+1] == 'n' {
-			sliceValue = append(sliceValue, "\n")
-			sliceValue = append(sliceValue, "\n")
-			sliceValue = append(sliceValue, "\n")
-			sliceValue = append(sliceValue, "\n")
-			sliceValue = append(sliceValue, "\n")
-			sliceValue = append(sliceValue, "\n")
-			sliceValue = append(sliceValue, "\n")
-			sliceValue = append(sliceValue, "\n")
-
-			slice = append(slice, sliceValue)
-			i++
-		}
+		PrintSlice(slice)
+		slice = [][]string{}
+		fmt.Println()
 	}
+}
 
-	// fmt.Println(slice)
-
+func PrintSlice(slice [][]string) {
 	for i := 0; i < 8; i++ {
+
 		lineParts := []string{}
 		for _, line := range slice {
 			lineParts = append(lineParts, line[i])
 		}
-		fmt.Println(strings.Join(lineParts, " "))
+		lnSlice := CleanSlice(lineParts)
+		// fmt.Println("len linepqrts : ", len(lnSlice))
+		if len(lnSlice) != 0 {
+			fmt.Println(strings.Join(lineParts, " "))
+		}
+		
 	}
+}
+
+func CleanSlice(slice []string) []string {
+	str := strings.Join(slice, " ")
+	slice = strings.Fields(str)
+	return slice
 }
