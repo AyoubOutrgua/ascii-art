@@ -12,72 +12,46 @@ func main() {
 		return
 	}
 	inputText := os.Args[1]
-	inputSlice := []string{}
-	str := ""
-	for i := 0; i < len(inputText); i++ {
-		// fmt.Println("str = ",str)
-		if i+1 < len(inputText) && inputText[i] == '\\' && inputText[i+1] == 'n' {
-			inputSlice = append(inputSlice, str)
-			str = ""
-			i++
-		} else {
-			str += string(inputText[i])
-		}
-	}
-	// fmt.Println("str outside = ",str)
-	inputSlice = append(inputSlice, str)
-	data, err := os.ReadFile("standard.txt")
+	wordsSlice := strings.Split(inputText, "\\n")
+	fileData, err := os.ReadFile("standard.txt")
 	if err != nil {
 		fmt.Println("error:", err)
 		return
 	}
-	blocks := strings.Split(string(data), "\n\n")
+	blocks := strings.Split(string(fileData), "\n\n")
 	if strings.Count(blocks[0], "\n") == 8 {
 		blocks[0] = blocks[0][1:]
 	}
-	art_table := make(map[int]string)
+	asciiArtTable := make(map[int]string)
 	key := 32
 	for _, block := range blocks {
-		art_table[key] = block
+		asciiArtTable[key] = block
 		key++
 	}
-	slice := [][]string{}
-	sliceValue := []string{}
-	// fmt.Println(inputSlice)
-	for _, v := range inputSlice {
-		for i := 0; i < len(v); i++ {
-			for key, value := range art_table {
-				if v[i] == byte(key) {
-					sliceValue = strings.Split(value, "\n")
-					slice = append(slice, sliceValue)
-					sliceValue = []string{}
+	artSlice := [][]string{}
+	for _, word := range wordsSlice {
+		if len(word) == 0 {
+			fmt.Println()
+			continue
+		}
+		for _, letter := range word {
+			for key, value := range asciiArtTable {
+				if letter == rune(key) {
+					artSlice = append(artSlice, strings.Split(value, "\n"))
 				}
 			}
 		}
-		PrintSlice(slice)
-		slice = [][]string{}
-		fmt.Println()
+		PrintArt(artSlice)
+		artSlice = [][]string{}
 	}
 }
 
-func PrintSlice(slice [][]string) {
+func PrintArt(artSlice [][]string) {
 	for i := 0; i < 8; i++ {
-
 		lineParts := []string{}
-		for _, line := range slice {
+		for _, line := range artSlice {
 			lineParts = append(lineParts, line[i])
 		}
-		lnSlice := CleanSlice(lineParts)
-		// fmt.Println("len linepqrts : ", len(lnSlice))
-		if len(lnSlice) != 0 {
-			fmt.Println(strings.Join(lineParts, " "))
-		}
-		
+		fmt.Println(strings.Join(lineParts, " "))
 	}
-}
-
-func CleanSlice(slice []string) []string {
-	str := strings.Join(slice, " ")
-	slice = strings.Fields(str)
-	return slice
 }
