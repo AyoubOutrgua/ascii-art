@@ -9,11 +9,6 @@ import (
 func AppendArt(wordsSlice []string, asciiArtTable map[int]string) {
 	artSlice := [][]string{}
 	// check if there is an empty string just print a newline and skip
-	// fmt.Println(wordsSlice[0])
-	// fmt.Println(wordsSlice[1])
-	// fmt.Println(wordsSlice[2])
-	// fmt.Println(wordsSlice[3])
-	// fmt.Println(wordsSlice[4])
 	for _, word := range wordsSlice {
 		if len(word) == 0 {
 			fmt.Println()
