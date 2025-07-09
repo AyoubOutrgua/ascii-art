@@ -21,5 +21,9 @@ func main() {
 		}
 	}
 	// calling functions to handle the input
-	function.AppendArt(strings.Split(os.Args[1], "\\n"), function.AsciiArtTable())
+	wordsSlice := strings.Split(os.Args[1], "\\n")
+	if len(wordsSlice[0]) == 0 {
+		wordsSlice = wordsSlice[1:]
+	}
+	function.AppendArt(wordsSlice, function.AsciiArtTable())
 }

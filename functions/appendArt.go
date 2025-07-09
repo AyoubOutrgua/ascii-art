@@ -4,13 +4,20 @@ import (
 	"fmt"
 	"strings"
 )
+
 // a function to range in the input and print it if matches with the map values
 func AppendArt(wordsSlice []string, asciiArtTable map[int]string) {
 	artSlice := [][]string{}
-	//check if there is an empty string just print a newline and skip
+	// check if there is an empty string just print a newline and skip
+	// fmt.Println(wordsSlice[0])
+	// fmt.Println(wordsSlice[1])
+	// fmt.Println(wordsSlice[2])
+	// fmt.Println(wordsSlice[3])
+	// fmt.Println(wordsSlice[4])
 	for _, word := range wordsSlice {
 		if len(word) == 0 {
 			fmt.Println()
+
 			continue
 		}
 		/*range in each part letter by letter and check if it matches the map values
@@ -18,7 +25,7 @@ func AppendArt(wordsSlice []string, asciiArtTable map[int]string) {
 		for _, letter := range word {
 			for key, value := range asciiArtTable {
 				if letter == rune(key) {
-			artSlice = append(artSlice, strings.Split(value, "\n"))
+					artSlice = append(artSlice, strings.Split(value, "\n"))
 				}
 			}
 		}
