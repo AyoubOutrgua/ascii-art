@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strings"
 
 	function "asciiart/functions"
 )
@@ -14,16 +13,17 @@ func main() {
 		fmt.Println("number of arguments is wrong!")
 		return
 	}
-	for _, v := range os.Args[1] {
-		if v < 32 || v > 126 {
-			fmt.Println("error, string is not valid ")
-			return
-		}
+
+	// check range of printable characters
+	inputText := os.Args[1]
+	if !function.CheckRange(inputText) {
+		fmt.Println("error, string is not valid ")
+		return
 	}
+
+	// split input text to slice of string
+	wordsSlice := function.SplitInput(inputText)
+
 	// calling functions to handle the input
-	wordsSlice := strings.Split(os.Args[1], "\\n")
-	if len(wordsSlice[0]) == 0 {
-		wordsSlice = wordsSlice[1:]
-	}
 	function.AppendArt(wordsSlice, function.AsciiArtTable())
 }

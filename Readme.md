@@ -18,6 +18,6 @@
 To run the ASCII-Art program:
 
 ```bash
-git clone https://learn.zone01oujda.ma/git/boulhaj/ascii-art.git
+git clone https://github.com/AyoubOutrgua/ascii-art.git
 cd ascii-art
 go run . "your text here"
